@@ -27,6 +27,13 @@ x-n8n: &service-n8n
         - N8N_PERSONALIZATION_ENABLED=false
         - N8N_ENCRYPTION_KEY
         - N8N_USER_MANAGEMENT_JWT_SECRET
+        - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+        - N8N_RUNNERS_ENABLED=true
+        - OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS=true
+        - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+        - EXECUTIONS_MODE=queue
+        - QUEUE_BULL_REDIS_HOST=redis
+        - QUEUE_BULL_REDIS_PORT=6379
         - WEBHOOK_URL=${N8N_HOSTNAME:+https://}${N8N_HOSTNAME:-http://localhost:5678}
 
 x-ollama: &service-ollama
@@ -105,6 +112,13 @@ services:
             n8n-import:
                 condition: service_completed_successfully
 
+    # n8n-worker:
+    #     <<: *service-n8n
+    #     restart: unless-stopped
+    #     command: worker
+    #     depends_on:
+    #         - redis
+
     qdrant:
         image: qdrant/qdrant
         container_name: qdrant
@@ -156,6 +170,7 @@ services:
             - SEARXNG_HOSTNAME=${SEARXNG_HOSTNAME:-":8006"}
             - LANGFUSE_HOSTNAME=${LANGFUSE_HOSTNAME:-":8007"}
             - NEO4J_HOSTNAME=${NEO4J_HOSTNAME:-":8008"}
+            - CRAWL4AI_HOSTNAME=${CRAWL4AI_HOSTNAME:-":8009"}
             - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL:-internal}
         cap_drop:
             - ALL

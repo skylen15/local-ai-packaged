@@ -3,6 +3,10 @@ services:
         ports:
             - 127.0.0.1:3001:3001
 
+    db:
+        ports:
+            - 5434:5432
+
     crawl4ai:
         ports:
             - 127.0.0.1:11235:11235
@@ -50,7 +54,7 @@ services:
 
     redis:
         ports:
-            - 127.0.0.1:6379:6379
+            - 6379:6379
 
     searxng:
         ports:

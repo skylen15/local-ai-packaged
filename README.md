@@ -129,6 +129,7 @@ Before running the services, you need to set up your environment variables for S
     OLLAMA_HOSTNAME=ollama.yourdomain.com
     SEARXNG_HOSTNAME=searxng.yourdomain.com
     NEO4J_HOSTNAME=neo4j.yourdomain.com
+    CRAWL4AI_HOSTNAME=crawl4ai.yourdomain.com
     LETSENCRYPT_EMAIL=your-email-address
     ```
 

@@ -14,6 +14,7 @@ import time
 import argparse
 import platform
 import sys
+from dotenv import load_dotenv
 
 def run_command(cmd, cwd=None):
     """Run a shell command and print it."""
@@ -74,7 +75,10 @@ def start_local_ai(profile=None, environment=None):
         cmd.extend(["-f", "docker-compose.override.private.yml"])
     if environment and environment == "public":
         cmd.extend(["-f", "docker-compose.override.public.yml"])
-    cmd.extend(["up", "-d"])
+    # Read number of n8n workers from environment variable, default to 2
+    n8n_workers = os.getenv("N8N_WORKERS_AMOUNT", "1")
+    cmd.extend(["up", "-d", "--scale", f"n8n-worker={n8n_workers}"])
+    # cmd.extend(["up", "-d"])
     run_command(cmd)
 
 def generate_searxng_secret_key():
@@ -227,6 +231,7 @@ def main():
 
     clone_supabase_repo()
     prepare_supabase_env()
+    load_dotenv()
 
     # Generate SearXNG secret key and check docker-compose.yml
     generate_searxng_secret_key()
